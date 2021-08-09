@@ -1,0 +1,23 @@
+import Command from "../../structures/Command.js"
+import Discord from "discord.js"
+
+export default class NameCommand extends Command {
+    constructor(client) {
+        super({
+            name: "",
+            description: "",
+            category: "",
+            aliases: [],
+            dirname: global.__dirname(import.meta)
+        }, client)
+    }
+
+    /** 
+    * @param {Discord.Message} message
+    * @param {Array} args
+    */
+
+    async run(message, args) {
+        
+    }
+}

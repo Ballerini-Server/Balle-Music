@@ -1,0 +1,11 @@
+import Event from "../structures/Event.js"
+import Discord from "discord.js"
+
+export default class NameEvent extends Event {
+    constructor(client) {
+        super(client, "name_event", global.__dirname(import.meta))
+    }
+
+    
+    async run(<args>) {}
+}

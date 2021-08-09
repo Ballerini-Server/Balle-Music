@@ -1,0 +1,25 @@
+{
+  "name": "balle-music",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ballerini-Server/Balle-Music.git"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Ballerini-Server/Balle-Music/issues"
+  },
+  "homepage": "https://github.com/Ballerini-Server/Balle-Music#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "discord.js": "^13.0.1",
+    "ws": "^8.0.0"
+  }
+}
