@@ -122,6 +122,7 @@ export default class NodeManager {
         delete this.stats.op
         if (msg.guildId && this.manager.players.has(msg.guildId)) this.manager.players.get(msg.guildId).emit(msg.op, msg)
         this.manager.emit("raw", msg, this)
+        // console.log(msg)
     }
     onError(event) {
         const error = event && event.error ? event.error : event
@@ -145,7 +146,7 @@ export default class NodeManager {
         }, this.reconnectInterval)
     }
     _send({ data, resolve, reject }) {
-        this.ws.send(data, (error) => {
+        return this.ws.send(data, (error) => {
             if (error) reject(error)
             else resolve(true)
         })

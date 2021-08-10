@@ -1,10 +1,11 @@
 import Command from "../../structures/Command.js"
 import Discord from "discord.js"
+import Player from "../../structures/music/player/Player.js"
 let coderegex = /^```(?:js)?\s(.+[^\\])```$/is;
 import { exec } from "child_process"
 import Util from "util"
 
-export default class NameCommand extends Command {
+export default class EvalCommand extends Command {
     constructor(client) {
         super({
             name: "eval",
@@ -18,9 +19,10 @@ export default class NameCommand extends Command {
     /** 
     * @param {Discord.Message} message
     * @param {Array} args
+    * @param {Player} player
     */
 
-    async run(message, args) {
+    async run(message, args, player) {
         if(!this.client.config.devs.includes(message.author.id)) return message.reply({
             embeds: [
                 new Discord.MessageEmbed()
@@ -85,6 +87,6 @@ async function resultado(client, message, result) {
 
 function consoleRun(command) {
     return new Promise((resolve, reject) => {
-        exec(command, (err, stout, sterr) => err || sterr ? reject(err || sterr) : resolve(stout.replace(/\\r|\\n/g, '')))
+        exec(command, (err, stout, sterr) => err || sterr ? reject(err || sterr) : resolve(stout.replace(/\r|\n/g, '')))
     })
 }

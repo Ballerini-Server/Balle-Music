@@ -1,5 +1,6 @@
 import Command from "../../structures/Command.js"
 import Discord from "discord.js"
+import Player from "../../structures/music/player/Player.js"
 
 export default class NameCommand extends Command {
     constructor(client) {
@@ -15,9 +16,10 @@ export default class NameCommand extends Command {
     /** 
     * @param {Discord.Message} message
     * @param {Array} args
+    * @param {Player} player
     */
 
-    async run(message, args) {
+    async run(message, args, player) {
         
     }
 }

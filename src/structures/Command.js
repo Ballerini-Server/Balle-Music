@@ -8,6 +8,7 @@ export default class Command {
     * @param {Array} aliases
     * @param {String} category
     * @param {String} dirname
+    * @param {Object} requires
     */
 
     constructor({
@@ -15,7 +16,8 @@ export default class Command {
         description = null,
         aliases = [],
         category = null,
-        dirname = null
+        dirname = null,
+        requires = {}
     }, client) {
         this.client = client
         this.name = name
@@ -23,5 +25,6 @@ export default class Command {
         this.aliases = aliases
         this.category = category
         this.dirname = dirname
+        this.requires = requires
     }
 }

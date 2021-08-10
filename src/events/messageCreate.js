@@ -16,15 +16,18 @@ export default class MessageCreateEvent extends Event {
         const perms = message.channel.permissionsFor(this.client.user.id);
         if(!perms.has("SEND_MESSAGES")) return;
 
-        if(!perms.has("EMBED_LINKS")) return message.quote(`> Eu preciso de permissão de \`Enviar Links\``)
-        if(!perms.has("USE_EXTERNAL_EMOJIS")) return message.quote(`> Eu preciso de permissão de \`Usar Emojis Externos\``)
-        if(!perms.has("ADD_REACTIONS")) return message.quote(`> Eu preciso de permissão de \`Adicionar Reações\``)
-        if(!perms.has("ATTACH_FILES")) return message.quote(`> Eu preciso de permissão de \`Anexar arquivos\``)
+        if(!perms.has("EMBED_LINKS")) return message.reply(`> Eu preciso de permissão de \`Enviar Links\``)
+        if(!perms.has("USE_EXTERNAL_EMOJIS")) return message.reply(`> Eu preciso de permissão de \`Usar Emojis Externos\``)
+        if(!perms.has("ADD_REACTIONS")) return message.reply(`> Eu preciso de permissão de \`Adicionar Reações\``)
+        if(!perms.has("ATTACH_FILES")) return message.reply(`> Eu preciso de permissão de \`Anexar arquivos\``)
 
         let prefixo
         let prefixs = [`<@${this.client.user.id}>`, `<@!${this.client.user.id}>`, this.client.config.prefix]
         for (let i of prefixs) {
-            if(message.content.startsWith(i.toLowerCase())) {
+            if(message.content.startsWith(i.toLowerCase() + " ")) {
+                prefixo = i + " "
+                break;
+            } else if(message.content.startsWith(i.toLowerCase())) {
                 prefixo = i
                 break;
             }
@@ -38,8 +41,67 @@ export default class MessageCreateEvent extends Event {
         command = this.client.commands.find(c => c.name == command || (c.aliases && c.aliases.includes(command)))
         if(!command) return;
 
+        let player = this.client.music.players.get(message.guild.id)
+
+        if(command.requires?.player && !player) return message.reply(new Discord.MessageEmbed()
+            .setColor("RED")
+            .setDescription("**Eu não tenho um player nesse servidor!**")
+            .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+            .setTimestamp().setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+            .setTimestamp()
+        ) 
+        
+        if(command.requires?.memberVoiceChannel) {
+            if(!this.client.music.idealNodes[0]) return message.reply({
+                embeds: [
+                    new Discord.MessageEmbed()
+                    .setColor("RED")
+                    .setDescription("**Estou sem conexão com meus nodes! Tente novamente depois.**")
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setTimestamp()
+                ]
+            })
+            const channel = message.member.voice.channel
+            if(!channel) return message.reply({
+                embeds: [
+                    new Discord.MessageEmbed()
+                    .setColor("RED")
+                    .setDescription("**Você precisa estar em um canal de voz!**")
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setTimestamp()
+                ]
+            })
+            if(player && message.guild.me.voice.channel && message.guild.me.voice.channel.id !== channel.id) return message.reply({
+                embeds: [
+                    new Discord.MessageEmbed()
+                    .setColor("RED")
+                    .setDescription("**Você precisa estar no mesmo canal de voz que o meu!**")
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setTimestamp()
+                ]
+            })
+            if(!channel.permissionsFor(this.client.user.id).has(1048576)) return message.reply({
+                embeds: [
+                    new Discord.MessageEmbed()
+                    .setColor("RED")
+                    .setDescription("**Eu não tenho permissão para conectar no seu canal de voz!**")
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setTimestamp()
+                ]
+            })
+            if(!channel.permissionsFor(this.client.user.id).has(2097152)) return message.reply({
+                embeds: [
+                    new Discord.MessageEmbed()
+                    .setColor("RED")
+                    .setDescription("**Eu não tenho permissão para falar no seu canal de voz!**")
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setTimestamp()
+                ]
+            })
+        }
+
         try {
-            command.run(message, args);
+            await command.run(message, args, player);
         } catch (e) {
             messgae.reply({
                 embeds: [
