@@ -17,6 +17,11 @@ class BalleMusic extends Client {
         this.music = new Manager(this, this.config.lavalink_nodes, {
             user: "874354515330089020"
         })
+
+        this.on("interactionCreate", interaction => {
+            if(interaction.isButton() && this.listenerCount("clickButton")) this.emit("clickButton", interaction)
+            if(interaction.isSelectMenu() && this.listenerCount("clickMenu")) this.emit("clickMenu", interaction)
+        })
     }
 
     loadCommands() {

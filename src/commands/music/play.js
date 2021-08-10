@@ -60,13 +60,14 @@ export default class PlayCommand extends Command {
             })
         }
         else if(results.loadType == 'PLAYLIST_LOADED') {
-            results.tracks.map(t => player.queue.push(t));
+            player.queue.push(results.tracks)
 
             message.reply({
                 embeds: [
                     new Discord.MessageEmbed()
-                    .setColor("#E0FFFF")
+                    .setColor("#FFF2E7")
                     .setDescription(`${results.playlistInfo.name} | ${results.tracks.length} Músicas`)
+                    .setFooter(`Soliticado por: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
                 ]
             })
 
@@ -78,9 +79,9 @@ export default class PlayCommand extends Command {
             else message.reply({
                 embeds: [
                     new Discord.MessageEmbed()
-                    .setColor("#E0FFFF")
+                    .setColor("#FFF2E7")
                     .setDescription(`[\`${results.tracks[0].title}\`](${results.tracks[0].url}) - \`${!results.tracks[0].isStream ? pretty(results.tracks[0].duration, {colonNotation: true, secondsDecimalDigits: 0}) : "◉ LIVE"}\``)
-                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setFooter(`Soliticado por: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
                 ]
             })
         }

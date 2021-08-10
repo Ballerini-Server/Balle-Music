@@ -4,8 +4,9 @@ import ManagerEvents from "./ManagerEvents.js"
 import Player from "./player/Player.js"
 
 export default class LavalinkManager extends EventEmitter {
-    constructor(nodes, options) {
+    constructor(nodes, options, client) {
         super()
+        this.client = client
         this.nodes = new Map()
         this.players = new Map()
         this.voiceServers = new Map()

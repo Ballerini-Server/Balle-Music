@@ -2,7 +2,7 @@ import LavalinkManager from "./LavalinkManager.js";
 
 export default class Manager extends LavalinkManager {
     constructor(client, nodes, options) {
-        super(nodes, options || {});
+        super(nodes, options || {}, client);
         this.client = client;
         this.send = packet => {
             if (this.client.guilds.cache) {

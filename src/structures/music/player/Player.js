@@ -2,8 +2,7 @@ import { EventEmitter } from "events"
 import Queue from "./Queue.js"
 import axios from "axios"
 import PlayerEffects from "./PlayerEffects.js"
-import SongUtil from "../utils/Song.js"
-const Song = SongUtil.Song
+import Song from "../utils/Song.js"
 
 export default class Player extends EventEmitter {
     constructor(node, id) {
@@ -11,6 +10,7 @@ export default class Player extends EventEmitter {
         this.id = id
         this.node = node
         this.client = this.node.manager.client
+        this.manager = node.manager
         this.state = { volume: 100 }
         this.playing = false
         this.trackRepeat = false
@@ -18,7 +18,7 @@ export default class Player extends EventEmitter {
         this.timestamp = null
         this.paused = false
         this.queueIndex = 0
-        this.queue = new Queue()
+        this.queue = new Queue(this)
         this.trackPosition = this.position
         this.effects = new PlayerEffects(this)
         this.voiceUpdateState = null
@@ -99,6 +99,7 @@ export default class Player extends EventEmitter {
         }
 
         this.queue.current = track
+        this.paused = false
         await this.superPlay(track)
         return this
     }
@@ -106,17 +107,17 @@ export default class Player extends EventEmitter {
     searchSongs(query, requester) {
         const URL = `http${this.node.port ? '' : 's'}://${this.node.host}${this.node.port ? `:${this.node.port}` : ''}/loadtracks`
         const a = new URLSearchParams({
-          identifier: query
+            identifier: query
         })
         return axios.get(URL + `?${a.toString()}`, {
-          headers: { Authorization: this.node.password }
+            headers: { Authorization: this.node.password }
         }).then(res => {
-          if(res.status != 200) throw res.statusText
-          res.data.tracks = res.data.tracks.map(function(data) {
-              let track = new Song(data, requester, res.data, query)
-              return track
-          })
-          return res.data
+            if(res.status != 200) throw res.statusText
+            res.data.tracks = res.data.tracks.map(function(data) {
+                let track = new Song(data, requester, res.data, query)
+                return track
+            })
+            return res.data
         })
     }
 
@@ -129,7 +130,10 @@ export default class Player extends EventEmitter {
     async pause(pause) {
         const d = await this.send("pause", { pause })
         this.paused = pause
-        if (this.listenerCount("pause")) this.emit("pause", pause)
+        if(this.manager.listenerCount("event")) this.manager.emit("event", {
+            type: "PlayerTrackPause",
+            player: this
+        })
         return d
     }
     resume() {
@@ -164,6 +168,10 @@ export default class Player extends EventEmitter {
 
     skip() {
         this.send("stop")
+        if(this.manager.listenerCount("event")) this.manager.emit("event", {
+            type: "PlayerTrackSkip",
+            player: this
+        })
         return this
     }
 
@@ -178,10 +186,6 @@ export default class Player extends EventEmitter {
             this.skip()
             return this.queueIndex + 1
         }
-    }
-
-    get manager() {
-        return this.node.manager
     }
 
     get position() {

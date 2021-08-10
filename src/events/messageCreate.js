@@ -103,12 +103,13 @@ export default class MessageCreateEvent extends Event {
         try {
             await command.run(message, args, player);
         } catch (e) {
-            messgae.reply({
+            console.log(e)
+            message.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new Discord.MessageEmbed()
                     .setColor("#FF0000")
-                    .setDescription("Aconteceu um erro ao executar o comando, que tal reportar ele para a minha equipe?\nVocê pode relatar ele no meu [servidor de suporte](https://discord.gg/8K6Zry9Crx).")
-                    .addField("Erro:", `\`\`\`js\n${`${e}`.shorten(1990)}\`\`\``)
+                    .setDescription("Aconteceu um erro ao executar o comando.")
+                    .addField("Erro:", `\`\`\`js\n${`${e}`.slice(0, 1990)}\`\`\``)
                     .setFooter("Desculpa pelo transtorno.")
                 ]
             })
