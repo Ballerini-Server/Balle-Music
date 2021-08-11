@@ -43,9 +43,9 @@ export default class ButtonCollector extends CollectorBase {
     if (this.ended) return
     if (button.message.id != this.options.message.id || (this.options.user && button.user.id != this.options.user.id)) return null
     else if(this.options.button) {
-      if (button.id === this.options.button) return this.emit('collect', button) 
+      if (button.customId === this.options.button) return this.emit('collect', button) 
       else if (button.name !== this.options.button) {
-        if (button.id !== this.options.button) return null
+        if (button.customId !== this.options.button) return null
       } else this.emit('collect', button)
     } else this.emit('collect', button)
   }

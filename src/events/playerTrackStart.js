@@ -30,9 +30,34 @@ export default class PlayerTrackStartEvent extends Event {
         })
 
         let collector = new ButtonCollector(player.message, { stopOnCollect: false })
+        player.message.collector = collector
         
         collector.on("collect", async button => {
-            console.log("collect!")
+            button.deferUpdate().catch(() => {})
+            if(this.client.guilds.cache.get(player.id)?.me.voice.channel?.members.get(button.user.id)) {
+                switch (button.customId) {
+                    case "player_back":
+                        if(!player.queue[player.queueIndex - 1]) return
+                        player.back()
+                    break;
+
+                    case "player_pause":
+                        player.pause(true)
+                    break;
+                    
+                    case "player_resume":
+                        player.pause(false)
+                    break;
+
+                    case "player_skip": 
+                        if(!player.queue[player.queueIndex + 1]) return
+                        player.skip()
+                    break;
+
+                    default:
+                        break;
+                }
+            }
         })
     }
 }

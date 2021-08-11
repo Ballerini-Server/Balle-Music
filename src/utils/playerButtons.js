@@ -22,8 +22,8 @@ export default function playerButtons(player) {
     .setEmoji("874732236061175859")
     .setStyle(2)
 
-    let buttonNext = new Discord.MessageButton()
-    .setCustomId(`player_next`)
+    let buttonSkip = new Discord.MessageButton()
+    .setCustomId(`player_skip`)
     .setEmoji("874732301710397450")
     .setStyle(2)
     .setDisabled(player.queue[Number(player.queueIndex) + 1] ? false : true)
@@ -32,6 +32,6 @@ export default function playerButtons(player) {
     .addComponents([
         buttonBack,
         player.paused ? buttonResume : buttonPause,
-        buttonNext
+        buttonSkip
     ])
 }
