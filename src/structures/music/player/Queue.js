@@ -17,7 +17,7 @@ export default class Queue extends Array {
     push(args) {
       if(Array.isArray(args)) {
         args = args.flat(Infinity)
-        super.push(args)
+        args.map(x => super.push(x)) 
         if(this.player.manager.listenerCount("event")  && this.length != args.length) this.player.manager.emit("event", {
           type: "PlayerTracksAdd",
           player: this.player,

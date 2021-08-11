@@ -48,7 +48,7 @@ export default class PlayCommand extends Command {
                 .setColor("RED")
                 .setDescription("**Aconteceu um erro ao carregar a música.**")
             ]
-        })
+        }).catch(() => {})
         else if(results.loadType == 'NO_MATCHES') {
             if(player.queue.totalSize == 0) client.music.leave(message.guild.id)
             return message.reply({
@@ -57,7 +57,7 @@ export default class PlayCommand extends Command {
                     .setColor("RED")
                     .setDescription("**Não consegui achar a música.**")
                 ]
-            })
+            }).catch(() => {})
         }
         else if(results.loadType == 'PLAYLIST_LOADED') {
             player.queue.push(results.tracks)
@@ -69,7 +69,7 @@ export default class PlayCommand extends Command {
                     .setDescription(`${results.playlistInfo.name} | ${results.tracks.length} Músicas`)
                     .setFooter(`Soliticado por: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
                 ]
-            })
+            }).catch(() => {})
 
             if(!player.queue.current) player.play()
         } else {
@@ -83,7 +83,7 @@ export default class PlayCommand extends Command {
                     .setDescription(`[\`${results.tracks[0].title}\`](${results.tracks[0].url}) - \`${!results.tracks[0].isStream ? pretty(results.tracks[0].duration, {colonNotation: true, secondsDecimalDigits: 0}) : "◉ LIVE"}\``)
                     .setFooter(`Soliticado por: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
                 ]
-            })
+            }).catch(() => {})
         }
     }
 }
