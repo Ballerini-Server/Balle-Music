@@ -27,8 +27,8 @@ export default class CollectorBase extends EventEmitter {
     createTimeout (time) {
         try {
             setTimeout(() => {
-            this.stopAll()
-            }, time)
+                this.stopAll()
+            }, Number(time))
         } catch (error) {
             this.error = error
             this.stopAll()

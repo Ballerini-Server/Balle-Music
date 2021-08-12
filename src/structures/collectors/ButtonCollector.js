@@ -17,19 +17,13 @@ export default class ButtonCollector extends CollectorBase {
 
     if(this.options.time) this.createTimeout(this.options.time)
     this.client.on('clickButton', (button) => {
-      return this.collect(button)
+      this.collect(button)
     })
 
-    this.on('collect', (button) => {
-      this.collectedSize += 1
-      this.collected.push({
-        message: button.message,
-        button: button,
-        user: button.user
+    this.on("end", () => {
+      this.client.removeListener("clickButton", (button) => {
+        this.collect(button)
       })
-      if (this.options.stopOnCollect) {
-        return this.stopAll()
-      }
     })
   }
 
@@ -39,15 +33,24 @@ export default class ButtonCollector extends CollectorBase {
    * @returns 
    */
 
-  collect (button) {
-    if (this.ended) return
-    if (button.message.id != this.options.message.id || (this.options.user && button.user.id != this.options.user.id)) return null
-    else if(this.options.button) {
-      if (button.customId === this.options.button) return this.emit('collect', button) 
-      else if (button.name !== this.options.button) {
-        if (button.customId !== this.options.button) return null
-      } else this.emit('collect', button)
-    } else this.emit('collect', button)
-  }
+  collect(button) {
+    if(this.ended) return
+    if(
+      button.message.id != this.options.message.id
+      ||
+      (this.options.user && button.user.id != this.options.user.id)
+    ) return
 
+    if(this.options.button && button.customId != this.options.button) return
+
+    this.emit('collect', button)
+
+    this.collectedSize += 1
+    this.collected.push({
+       message: button.message,
+      button: button,
+      user: button.user
+    })
+    if (this.options.stopOnCollect) return this.stopAll()
+  }
 }

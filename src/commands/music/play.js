@@ -47,6 +47,8 @@ export default class PlayCommand extends Command {
                 new Discord.MessageEmbed()
                 .setColor("RED")
                 .setDescription("**Aconteceu um erro ao carregar a música.**")
+                .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                .setTimestamp()
             ]
         }).catch(() => {})
         else if(results.loadType == 'NO_MATCHES') {
@@ -56,6 +58,8 @@ export default class PlayCommand extends Command {
                     new Discord.MessageEmbed()
                     .setColor("RED")
                     .setDescription("**Não consegui achar a música.**")
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setTimestamp()
                 ]
             }).catch(() => {})
         }
@@ -76,7 +80,7 @@ export default class PlayCommand extends Command {
             player.queue.push(results.tracks[0])
 
             if(!player.queue.current) player.play()
-            else message.reply({
+            await message.reply({
                 embeds: [
                     new Discord.MessageEmbed()
                     .setColor("#FFF2E7")

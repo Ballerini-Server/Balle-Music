@@ -1,5 +1,6 @@
 import dirnameConfig from "./utils/dirname.js"
 dirnameConfig()
+import './functions/shorten.js'
 
 import { Client, Intents } from "discord.js"
 import config from "./config/config.js"

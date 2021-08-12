@@ -40,7 +40,11 @@ export default class PlayerTrackStartEvent extends Event {
      */
     async run(player, track) {
         let source = sources[track.source] || {name: track.source, emoji: ":cloud:"}
-        if(player.message) player.message.delete().catch(() => {})
+        if(player.message) {
+            if(player.message.collector) player.message.collector.stopAll()
+            player.message.delete().catch(() => {})
+        }
+        
         player.message = await player.text.send({
             embeds: [
                 new Discord.MessageEmbed()
@@ -48,7 +52,7 @@ export default class PlayerTrackStartEvent extends Event {
                 .setAuthor("Tocando agora:")
                 .setTitle(track.title)
                 .setURL(track.url)
-                .setDescription(`>>> :minidisc:**| Autor:** \`${track.author}\`\n:stopwatch:**| Duração:** \`${pretty(track.duration, {colonNotation: true, secondsDecimalDigits: 0})}\`\n${source.emoji}**| Plataforma:** \`${source.name}\`${track.playlist ? `:bookmark_tabs:**| ${playlistTypes[track.playlist.type]}:** [\`${track.playlist.name}\`](${track.playlist.url})` : ""}`)
+                .setDescription(`>>> :minidisc:**| Autor:** \`${track.author}\`\n:stopwatch:**| Duração:** \`${pretty(track.duration, {colonNotation: true, secondsDecimalDigits: 0})}\`\n${source.emoji}**| Plataforma:** \`${source.name}\`${track.playlist ? `\n:bookmark_tabs:**| ${playlistTypes[track.playlist.type]}:** [\`${track.playlist.name}\`](${track.playlist.url})` : ""}`)
                 .setFooter(`Adicionada por: ${track.requester.tag}`, track.requester.displayAvatarURL({dynamic: true}))
                 .setThumbnail(track.artwork)
             ],
