@@ -40,6 +40,10 @@ export default class NodeManager {
         this.stats = defaltStats
         this.resumeTimeout = 120
         this._queue = []
+        this._ping = {
+            ping: null,
+            pong: null
+        }
         this.id = options.id
         if (options.host) Object.defineProperty(this, "host", { value: options.host })
         if (options.port) Object.defineProperty(this, "port", { value: options.port })
@@ -118,12 +122,13 @@ export default class NodeManager {
         if (Array.isArray(data)) data = Buffer.concat(data)
         else if (data instanceof ArrayBuffer) data = Buffer.from(data)
         const msg = JSON.parse(data.toString())
+        if(msg.op == "pong") this._ping.pong = Date.now() 
         if (msg.op && msg.op === "stats") this.stats = { ...msg }
         delete this.stats.op
         if (msg.guildId && this.manager.players.has(msg.guildId)) this.manager.players.get(msg.guildId).emit(msg.op, msg)
         this.manager.emit("raw", msg, this)
-        // console.log(msg)
     }
+    
     onError(event) {
         const error = event && event.error ? event.error : event
         if (!error) return
@@ -131,37 +136,39 @@ export default class NodeManager {
         this.reconnect()
         console.log(`[LAVALINK]: ${this.id} teve um erro e foi desconectado.`)
     }
+
     onClose(event) {
-        this.manager.emit("disconnect", event, this)
-        console.log(`[LAVALINK]: ${this.id} foi desconectado.`)
+        this.manager.emit("event", {
+            type: "NodeDisconect",
+            event: event,
+            node: this
+        })
         if (event.code !== 1000 || event.reason !== "destroy") return this.reconnect()
     }
+
     reconnect() {
         this._reconnect = setTimeout(() => {
-            this.ws.removeAllListeners()
+            this.ws?.removeAllListeners()
             this.ws = null
             this.manager.emit("reconnecting", this)
             this.connect()
             console.log(`[LAVALINK]: ${this.id} foi reconectado.`)
         }, this.reconnectInterval)
     }
+
     _send({ data, resolve, reject }) {
         return this.ws.send(data, (error) => {
             if (error) reject(error)
             else resolve(true)
         })
     }
+
     async _queueFlush() {
         await Promise.all(this._queue.map(this._send))
         this._queue = []
     }
 
     get ping() {
-        return (async() => {
-            let ping
-            let p1 = Date.now()
-            let d = await this.send({ op: "ping" })
-            return Date.now() - p1
-        })()
+        return this._ping.pong - this._ping.ping
     }
 }

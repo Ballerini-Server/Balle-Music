@@ -21,7 +21,7 @@ export default class QueueCommand extends Command {
 
     /** 
     * @param {Discord.Message} message
-    * @param {Array} args
+    * @param {String[]} args
     * @param {Player} player
     */
 

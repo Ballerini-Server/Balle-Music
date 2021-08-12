@@ -18,7 +18,7 @@ export default class EvalCommand extends Command {
 
     /** 
     * @param {Discord.Message} message
-    * @param {Array} args
+    * @param {String[]} args
     * @param {Player} player
     */
 
@@ -90,3 +90,4 @@ function consoleRun(command) {
         exec(command, (err, stout, sterr) => err || sterr ? reject(err || sterr) : resolve(stout.replace(/\r|\n/g, '')))
     })
 }
+

@@ -1,15 +1,22 @@
 export default class PlayerEffects {
-    constructor(player) {
+    constructor(player, data = {}) {
         this.player = player
-        this.volume = 100
         this.nightcore = false
         this.vaporwave = false
         this._8d = false
         this.tremolo = false
         this.equalizer = []
+
+        if(data) Object.keys(data).forEach(x => {
+            if(this[x]) this[x] = data[x]
+        })
     }
 
-    setFilter() {
+    setFilter(data) {
+        if(data) Object.keys(data).forEach(x => {
+            if(this[x]) this[x] = data[x]
+        })
+        
         let obj = {}
 
         if(this.nightcore) {
@@ -62,13 +69,6 @@ export default class PlayerEffects {
         this.equalizer = value
         
         return this.setFilter()
-    }
-
-    setVolume(value) {
-        this.player.send("volume", { volume: Number(value) || 100 })
-        this.volume = value
-        
-        return this
     }
 
     setTremolo(value) {

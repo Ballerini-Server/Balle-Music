@@ -17,5 +17,7 @@ export default class PlayerTrackAddEvent extends Event {
                 playerButtons(player)
             ]
         }).catch(() => {})
+
+        if(player.leaveTimeout) clearTimeout(player.leaveTimeout) && delete player.leaveTimeout
     }
 }

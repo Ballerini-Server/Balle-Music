@@ -3,9 +3,17 @@ import Queue from "./Queue.js"
 import axios from "axios"
 import PlayerEffects from "./PlayerEffects.js"
 import Song from "../utils/Song.js"
+import Node from "../Node.js"
 
 export default class Player extends EventEmitter {
-    constructor(node, id) {
+    /**
+     * @param {Node} node
+     */
+    constructor(node, id, options = {
+        queue: [],
+        effects: {},
+
+    }) {
         super()
         this.id = id
         this.node = node
@@ -18,7 +26,7 @@ export default class Player extends EventEmitter {
         this.timestamp = null
         this.paused = false
         this.queueIndex = 0
-        this.queue = new Queue(this)
+        this.queue = new Queue(this, options.queue)
         this.trackPosition = this.position
         this.effects = new PlayerEffects(this)
         this.voiceUpdateState = null
@@ -91,6 +99,7 @@ export default class Player extends EventEmitter {
         const track = this.queue[this.queueIndex]
         if(!track) {
             this.queue.current = null
+            this.playing = false
             if(this.manager.listenerCount("event")) this.manager.emit("event", {
                 type: "PlayerQueueEnd",
                 player: this
@@ -119,6 +128,13 @@ export default class Player extends EventEmitter {
             })
             return res.data
         })
+    }
+
+    setVolume(value) {
+        this.send("volume", { volume: !Number(value) && Number(value) != 0 ? 100 : Number(value) })
+        this.state.volume = value
+        
+        return this.state.volume
     }
 
     async stop() {
@@ -162,7 +178,7 @@ export default class Player extends EventEmitter {
     }
     
     send(op, data) {
-        if (!this.node.connected) return Promise.reject(new Error("No available websocket connection for selected node."))
+        if (!this.node.connected) return false
         return this.node.send({ ...data, op, guildId: this.id })
     }
 
@@ -191,5 +207,16 @@ export default class Player extends EventEmitter {
     get position() {
         if(!this.queue.current) return 0
         else return this.queue.current.duration - ((this.timestamp + this.queue.current.duration) - Date.now())
+    }
+
+    async changeNode(node)  {
+        let p = this.state.position
+        this.node = node
+        setTimeout(async() => {
+            await this.effects.setFilter()
+            if(this.playing) await this.send("play", { track: this.queue[this.queueIndex] })
+        }, 3000)
+
+        return this.node
     }
 }

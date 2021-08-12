@@ -20,12 +20,13 @@ export default class LavalinkManager extends EventEmitter {
         if (options.player) this.Player = options.player
         if (options.send) this.send = options.send
         for (const node of nodes) this.createNode(node)
+        ManagerEvents(this)
         setInterval(() => {
-            for (const node of Array.from(this.nodes, ([a, b]) => b).filter(n => n.connected)) {
+            for (const node of [...this.nodes.values()].filter(n => n.connected)) {
                 node.send({ op: "ping" })
+                node._ping.ping = Date.now()
             }
         }, 3000)
-        ManagerEvents(this)
     }
 
     connect() {
@@ -57,23 +58,23 @@ export default class LavalinkManager extends EventEmitter {
         await this.sendWS(data.guild, data.channel, joinOptions)
         return this.spawnPlayer(data)
     }
-    async leave(guild) {
-        await this.sendWS(guild, null)
+    async leave(guild, options = {}) {
+        if(options.sendWS != false) await this.sendWS(guild, null)
         const player = this.players.get(guild)
-        if (!player)
-            return false
-        player.removeAllListeners()
+        if (!player) return false
+        if(options.removeAllListeners != false) player.removeAllListeners()
         await player.send("destroy")
-        return this.players.delete(guild)
+        if(options.delete != false) this.players.delete(guild)
+        return true
     }
     async switch(player, node) {
-        const { track, state, voiceUpdateState } = { ...player }
+        const { queue, queueIndex, effects, state, voiceUpdateState, message } = { ...player }
         const position = state.position ? state.position + 2000 : 2000
-        await player.destroy()
+        await this.leave(player.id, { delete: false, sendWS: false, removeAllListeners: false })
         player.node = node
         await player.connect(voiceUpdateState)
-        await player.play(track, { startTime: position, volume: state.volume })
-        await player.equalizer(state.equalizer)
+        await player.effects.setFilter()
+        if(queue[queueIndex]) await player.send("play", { track: queue[queueIndex].track, startTime: position, volume: state.volume })
         return player
     }
     voiceServerUpdate(data) {

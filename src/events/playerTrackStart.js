@@ -50,11 +50,11 @@ export default class PlayerTrackStartEvent extends Event {
                 new Discord.MessageEmbed()
                 .setColor("#FFF2E7")
                 .setAuthor("Tocando agora:")
-                .setTitle(track.title)
-                .setURL(track.url)
+                .setTitle(`${track.title}`)
+                .setURL(`${track.url}`)
                 .setDescription(`>>> :minidisc:**| Autor:** \`${track.author}\`\n:stopwatch:**| Duração:** \`${pretty(track.duration, {colonNotation: true, secondsDecimalDigits: 0})}\`\n${source.emoji}**| Plataforma:** \`${source.name}\`${track.playlist ? `\n:bookmark_tabs:**| ${playlistTypes[track.playlist.type]}:** [\`${track.playlist.name}\`](${track.playlist.url})` : ""}`)
                 .setFooter(`Adicionada por: ${track.requester.tag}`, track.requester.displayAvatarURL({dynamic: true}))
-                .setThumbnail(track.artwork)
+                .setThumbnail(`${track.artwork}`)
             ],
             components: [
                 playerButtons(player)

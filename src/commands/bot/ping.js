@@ -13,7 +13,7 @@ export default class PingCommand extends Command {
 
     /** 
     * @param {Discord.Message} message
-    * @param {Array} args
+    * @param {String[]} args
     */
 
     async run(message, args) {

@@ -20,7 +20,7 @@ export default class SearchCommand extends Command {
 
     /** 
     * @param {Discord.Message} message
-    * @param {Array} args
+    * @param {String[]} args
     * @param {Player} player
     */
 
@@ -40,6 +40,8 @@ export default class SearchCommand extends Command {
                 new Discord.MessageEmbed()
                 .setColor("RED")
                 .setDescription("**Aconteceu um erro ao carregar a música.**")
+                .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                .setTimestamp()
             ]
         }).catch(() => {})
         else if(results.loadType == 'NO_MATCHES') {
@@ -49,6 +51,8 @@ export default class SearchCommand extends Command {
                     new Discord.MessageEmbed()
                     .setColor("RED")
                     .setDescription("**Não consegui achar a música.**")
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setTimestamp()
                 ]
             }).catch(() => {})
         }
@@ -100,6 +104,7 @@ export default class SearchCommand extends Command {
                 player.queue.push(track)
                 if(!player.queue.current) player.play()
                 await msg.edit({
+                    content: null,
                     embeds: [
                         new Discord.MessageEmbed()
                         .setColor("#FFF2E7")

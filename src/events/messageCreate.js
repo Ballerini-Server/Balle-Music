@@ -43,13 +43,16 @@ export default class MessageCreateEvent extends Event {
 
         let player = this.client.music.players.get(message.guild.id)
 
-        if(command.requires?.player && !player) return message.reply(new Discord.MessageEmbed()
-            .setColor("RED")
-            .setDescription("**Eu não tenho um player nesse servidor!**")
-            .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
-            .setTimestamp().setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
-            .setTimestamp()
-        ) 
+        if(command.requires?.player && !player) return message.reply({
+            embeds: [
+                new Discord.MessageEmbed()
+                .setColor("RED")
+                .setDescription("**Eu não tenho um player nesse servidor!**")
+                .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                .setTimestamp().setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                .setTimestamp()
+            ]
+        }) 
         
         if(command.requires?.memberVoiceChannel) {
             if(!this.client.music.idealNodes[0]) return message.reply({
