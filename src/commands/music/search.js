@@ -4,6 +4,14 @@ import Player from "../../structures/music/player/Player.js"
 import pretty from "pretty-ms"
 import MenuSelectCollector from "../../structures/collectors/MenuSelectCollector.js"
 import getSearch from "../../utils/getSearch.js"
+let sources = {
+    "youtube": "<:YouYube:875040802508783706>",
+    "soundcloud": "<:SoundCloud:875040777821102151>",
+    "twitch": "<:Twitch:875040836893679627>",
+    "jamendo": "<:Jamendo:881968488636350526>"
+}
+
+const a = /^(.*?)--(soundcloud|sc|youtube\s?music|ytm|youtube|yt)$/gi
 
 export default class SearchCommand extends Command {
     constructor(client) {
@@ -86,20 +94,21 @@ export default class SearchCommand extends Command {
             }))
 
             let msg = await message.reply({
-                content: `Resultados para a busca \`${args.join(" ").length > 300 ? args.join(" ").slice(0, 297) + "..." : args.join(" ")}\`:`,
+                content: `${sources[results.tracks[0].source] ? sources[results.tracks[0].source] : "🔎"} Resultados para a busca \`${args.join(" ").replace(a, "$1").length > 300 ? args.join(" ").replace(a, "$1").slice(0, 297) + "..." : args.join(" ").replace(a, "$1")}\`:`,
                 components: [
                     new Discord.MessageActionRow()
                     .addComponents([menu])
                 ]
             }).catch(() => {})
-
-            let coletor = new MenuSelectCollector(msg, {
-                user: message.author,
-                menuID: "search_menu",
+            
+            let coletor = msg.createMessageComponentCollector({
+                filter: (i) => i.user.id == message.author.id,
+                max: 1,
                 time: 1 * 1000 * 60
             })
 
             coletor.on("collect", async menu => {
+                await menu.deferUpdate().catch(() => {})
                 const track = results.tracks[menu.values[0]]
 
                 player.queue.push(track)
@@ -114,6 +123,10 @@ export default class SearchCommand extends Command {
                     ],
                     components: []
                 }).catch(() => {})
+
+            })
+
+            coletor.on("end", async() => {
 
             })
         }

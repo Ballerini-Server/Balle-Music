@@ -3,7 +3,6 @@ import Player from "../structures/music/player/Player.js"
 import Song from "../structures/music/utils/Song.js"
 import Discord from "discord.js"
 import playerButtons from "../utils/playerButtons.js"
-import ButtonCollector from "../structures/collectors/ButtonCollector.js"
 import pretty from "pretty-ms"
 let sources = {
     "youtube": {
@@ -20,6 +19,11 @@ let sources = {
         name: "Twitch",
         color: "#8A2BE2",
         emoji: "<:Twitch:875040836893679627>"
+    },
+    "jamendo": {
+        name: "Jamendo",
+        color: "#ff1e58",
+        emoji: "<:Jamendo:881968488636350526>"
     }
 }
 let playlistTypes = {

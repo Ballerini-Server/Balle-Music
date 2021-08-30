@@ -204,11 +204,6 @@ export default class Player extends EventEmitter {
         }
     }
 
-    get position() {
-        if(!this.queue.current) return 0
-        else return this.queue.current.duration - ((this.timestamp + this.queue.current.duration) - Date.now())
-    }
-
     async changeNode(node)  {
         let p = this.state.position
         this.node = node
