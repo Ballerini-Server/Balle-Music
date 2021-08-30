@@ -2,7 +2,9 @@ import { URL } from "url"
 import Playlist from "./Playlist.js"
 
 export default class Song {
-    constructor(track = {}, requester, res, query) {
+    constructor(track = {
+        info: {}
+    }, requester, res, query) {
         this.title = track.info.title || "Unknown Title"
         this.author = track.info.author || "Unknown Artist"
         this.duration = track.info.length
