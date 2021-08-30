@@ -4,6 +4,7 @@ import Player from "../../structures/music/player/Player.js"
 let coderegex = /^```(?:js)?\s(.+[^\\])```$/is;
 import { exec } from "child_process"
 import Util from "util"
+import axios from "axios";
 
 export default class EvalCommand extends Command {
     constructor(client) {

@@ -3,6 +3,7 @@ import Discord from "discord.js"
 import Player from "../../structures/music/player/Player.js"
 import pretty from "pretty-ms"
 import MenuSelectCollector from "../../structures/collectors/MenuSelectCollector.js"
+import getSearch from "../../utils/getSearch.js"
 
 export default class SearchCommand extends Command {
     constructor(client) {
@@ -32,7 +33,7 @@ export default class SearchCommand extends Command {
         }, { selfdeaf: true })
         player.text = message.channel
 
-        let search = `ytsearch:${args.join(' ')}`
+        let search = getSearch(args.join(" "))
         const results = await player.searchSongs(search, message.author)
 
         if(results.loadType == 'LOAD_FAILED') return message.reply({

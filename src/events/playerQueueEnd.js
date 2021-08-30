@@ -27,6 +27,7 @@ export default class PlayerQueueEndEvent extends Event {
             ]
         })
         let timeout = setTimeout(function() {
+            if(player.queue.current && player.playing || !player.leaveTimeout) return;
             player.destroy()
             if(player.message) player.message.delete().catch(() => {})
         }, 3 * 1000 * 60)

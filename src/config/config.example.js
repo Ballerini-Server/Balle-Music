@@ -8,6 +8,7 @@ export default {
             host: "localhost", // Host do node (String)
             password: "youshallnotpass", // Senha de acesso do node (String)
             port: 2333, // Porta de acesso ao node (Number)
+            name: "", // Nome do node (String)
             options: {
                 followRedirects: false // Se vai seguir o fluxo de redirecionamento
             }

@@ -3,6 +3,7 @@ import Discord from "discord.js"
 import Player from "../../structures/music/player/Player.js"
 import { URL } from "url"
 import pretty from "pretty-ms"
+import getSearch from "../../utils/getSearch.js"
 
 export default class PlayCommand extends Command {
     constructor(client) {
@@ -32,13 +33,7 @@ export default class PlayCommand extends Command {
         }, { selfdeaf: true })
         player.text = message.channel
 
-        let search
-        try {
-            new URL(args.join(' '))
-            search = args.join(' ')
-        } catch(_) {
-            search = `ytsearch:${args.join(' ')}`
-        }
+        let search = getSearch(args.join(" "))
 
         const results = await player.searchSongs(search, message.author)
 

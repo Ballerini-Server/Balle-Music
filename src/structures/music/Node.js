@@ -18,10 +18,11 @@ let defaltStats = {
 
 export default class NodeManager {
     constructor(manager, options = {
-        id: "Node",
+        id: Date.now(),
         host: "localhost",
         password: "youshallnotpass",
         port: 2333,
+        name: "Node",
         options: {
             followRedirects: false,
             resumeTimeout: 120,
@@ -45,6 +46,7 @@ export default class NodeManager {
             pong: null
         }
         this.id = options.id
+        this.name = options.name
         if (options.host) Object.defineProperty(this, "host", { value: options.host })
         if (options.port) Object.defineProperty(this, "port", { value: options.port })
         if (options.password) Object.defineProperty(this, "password", { value: options.password })

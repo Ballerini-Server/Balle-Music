@@ -50,46 +50,15 @@ export default class PlayerTrackStartEvent extends Event {
                 new Discord.MessageEmbed()
                 .setColor("#FFF2E7")
                 .setAuthor("Tocando agora:")
-                .setTitle(`${track.title}`)
+                .setTitle(`${source.emoji} ${track.title}`)
                 .setURL(`${track.url}`)
-                .setDescription(`>>> :minidisc:**| Autor:** \`${track.author}\`\n:stopwatch:**| Duração:** \`${pretty(track.duration, {colonNotation: true, secondsDecimalDigits: 0})}\`\n${source.emoji}**| Plataforma:** \`${source.name}\`${track.playlist ? `\n:bookmark_tabs:**| ${playlistTypes[track.playlist.type]}:** [\`${track.playlist.name}\`](${track.playlist.url})` : ""}`)
+                .setDescription(`>>> :minidisc:**| Autor:** \`${track.author}\`\n:stopwatch:**| Duração:** \`${pretty(track.duration, {colonNotation: true, secondsDecimalDigits: 0})}\`${track.playlist ? `\n:bookmark_tabs:**| ${playlistTypes[track.playlist.type]}:** [\`${track.playlist.name}\`](${track.playlist.url})` : ""}`)
                 .setFooter(`Adicionada por: ${track.requester.tag}`, track.requester.displayAvatarURL({dynamic: true}))
                 .setThumbnail(`${track.artwork}`)
             ],
             components: [
                 playerButtons(player)
             ]
-        })
-
-        let collector = new ButtonCollector(player.message, { stopOnCollect: false })
-        player.message.collector = collector
-        
-        collector.on("collect", async button => {
-            button.deferUpdate().catch(() => {})
-            if(this.client.guilds.cache.get(player.id)?.me.voice.channel?.members.get(button.user.id)) {
-                switch (button.customId) {
-                    case "player_back":
-                        if(!player.queue[player.queueIndex - 1]) return
-                        player.back()
-                    break;
-
-                    case "player_pause":
-                        player.pause(true)
-                    break;
-                    
-                    case "player_resume":
-                        player.pause(false)
-                    break;
-
-                    case "player_skip": 
-                        if(!player.queue[player.queueIndex + 1]) return
-                        player.skip()
-                    break;
-
-                    default:
-                        break;
-                }
-            }
         })
     }
 }

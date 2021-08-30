@@ -12,12 +12,16 @@ export default class PlayerTrackAddEvent extends Event {
      * @param {Player} player
      */
     async run(player) {
+        if(player.leaveTimeout) {
+            clearTimeout(player.leaveTimeout)
+            player.leaveTimeout = null
+        }
+        
         if(player.message) player.message = await player.message.edit({
             components: [
                 playerButtons(player)
             ]
         }).catch(() => {})
 
-        if(player.leaveTimeout) clearTimeout(player.leaveTimeout) && delete player.leaveTimeout
     }
 }
