@@ -29,7 +29,7 @@ export default class _8DCommand extends Command {
             embeds: [
                 new Discord.MessageEmbed()
                 .setColor("#FFF2E7")
-                .setDescription(`**8D ${!player.effects.nightcore ? "desativado" : "ativado"}.**`)
+                .setDescription(`**8D ${!player.effects._8d ? "desativado" : "ativado"}.**`)
                 .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
                 .setTimestamp()
             ]

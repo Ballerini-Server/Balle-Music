@@ -23,8 +23,12 @@ export default class MessageCreateEvent extends Event {
         if(!perms.has("ADD_REACTIONS")) return message.reply(`> Eu preciso de permissão de \`Adicionar Reações\``)
         if(!perms.has("ATTACH_FILES")) return message.reply(`> Eu preciso de permissão de \`Anexar arquivos\``)
         
+        const _prefix = db.ref(`guilds/${message.guild.id}/prefix`).val() || this.client.config.prefix
+        if(new RegExp(`^<@!?${this.client.user.id}>$`, 'i').test(message.content)) return message.reply({
+            content: `Olá ${message.author.toString()}, meu prefixo nesse servidor é \`${_prefix}\`, mas você também pode me mencionar(\`@${this.client.user.username}\`) para usar algum comando.`
+        })
         let prefixo
-        let prefixs = [`<@${this.client.user.id}>`, `<@!${this.client.user.id}>`, db.ref(`guilds/${message.guild.id}/prefix`).val() || this.client.config.prefix]
+        let prefixs = [`<@${this.client.user.id}>`, `<@!${this.client.user.id}>`, _prefix]
         for (let i of prefixs) {
             if(message.content.startsWith(i.toLowerCase() + " ")) {
                 prefixo = i + " "
