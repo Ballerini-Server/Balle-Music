@@ -5,6 +5,8 @@ let coderegex = /^```(?:js)?\s(.+[^\\])```$/is;
 import { exec } from "child_process"
 import Util from "util"
 import axios from "axios";
+import Sydb from "sydb"
+const db = new Sydb("src/database/guilds")
 
 export default class EvalCommand extends Command {
     constructor(client) {

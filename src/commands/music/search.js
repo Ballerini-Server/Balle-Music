@@ -34,6 +34,16 @@ export default class SearchCommand extends Command {
     */
 
     async run(message, args, player) {
+        if(!args[0]) return message.reply({
+            embeds: [
+                new Discord.MessageEmbed()
+                .setColor("RED")
+                .setDescription("**Você precisa informar a música para eu procurar.**")
+                .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                .setTimestamp()
+            ]
+        })
+        
         if(!player) player = await this.client.music.join({ 
             guild: message.guild.id, 
             channel: message.member.voice.channel.id, 

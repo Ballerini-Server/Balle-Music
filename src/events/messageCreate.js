@@ -1,5 +1,7 @@
 import Event from "../structures/Event.js"
 import Discord from "discord.js"
+import Sydb from "sydb"
+const db = new Sydb("src/database/guilds")
 
 export default class MessageCreateEvent extends Event {
     constructor(client) {
@@ -20,9 +22,9 @@ export default class MessageCreateEvent extends Event {
         if(!perms.has("USE_EXTERNAL_EMOJIS")) return message.reply(`> Eu preciso de permissão de \`Usar Emojis Externos\``)
         if(!perms.has("ADD_REACTIONS")) return message.reply(`> Eu preciso de permissão de \`Adicionar Reações\``)
         if(!perms.has("ATTACH_FILES")) return message.reply(`> Eu preciso de permissão de \`Anexar arquivos\``)
-
+        
         let prefixo
-        let prefixs = [`<@${this.client.user.id}>`, `<@!${this.client.user.id}>`, this.client.config.prefix]
+        let prefixs = [`<@${this.client.user.id}>`, `<@!${this.client.user.id}>`, db.ref(`guilds/${message.guild.id}/prefix`).val() || this.client.config.prefix]
         for (let i of prefixs) {
             if(message.content.startsWith(i.toLowerCase() + " ")) {
                 prefixo = i + " "
