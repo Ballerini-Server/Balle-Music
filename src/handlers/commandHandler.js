@@ -6,8 +6,8 @@ import client from "../bot.js"
  */
  export default async function(client) {
     client.commands = []
-
     let pastas = readdirSync(global.__dirname(import.meta) + "/../commands")
+    client.categories = [ ...pastas ]
     for(let pasta of pastas) {
         let commands = readdirSync(global.__dirname(import.meta) + "/../commands/" + pasta).filter(file => file.split(".").pop() == "js");
         for (let command of commands) {
