@@ -13,5 +13,11 @@ export default {
                 followRedirects: false // Se vai seguir o fluxo de redirecionamento
             }
         }
-    ]
+    ],
+    categories: {
+        bot: ":space_invader: Bot",
+        music: ":musical_note: Música",
+        R2D2: ":wrench: Developers(R2D2's)",
+        configuration: ":screwdriver: Configuração"
+    }
 }
