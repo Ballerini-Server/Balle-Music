@@ -2,7 +2,7 @@ import Command from "../../structures/Command.js"
 import Discord from "discord.js"
 import Player from "../../structures/music/player/Player.js"
 
-export default class SkipCommand extends Command {
+export default class LeaveCommand extends Command {
     constructor(client) {
         super({
             name: "leave",
