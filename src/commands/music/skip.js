@@ -8,7 +8,7 @@ export default class SkipCommand extends Command {
             name: "skip",
             description: "Pule a música que está sendo tocada",
             category: "music",
-            aliases: ["s", "pular"],
+            aliases: ["s", "pular","next"],
             dirname: global.__dirname(import.meta),
             requires: {
                 memberVoiceChannel: true,
