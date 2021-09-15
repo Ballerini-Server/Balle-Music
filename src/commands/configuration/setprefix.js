@@ -20,6 +20,17 @@ export default class SetPrefixCommand extends Command {
     */
 
     async run(message, args) {
+        if(!message.author.hasPermission('MANAGE_CHANNELS')){
+            return message.reply({
+                embeds: [
+                    new Discord.MessageEmbed()
+                    .setColor("RED")
+                    .setDescription("**Você precisa de permissão para setar o novo prefixo para o servidor.**")
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setTimestamp()
+                ]
+            })   
+        }
         if(!args[0]) return message.reply({
             embeds: [
                 new Discord.MessageEmbed()
