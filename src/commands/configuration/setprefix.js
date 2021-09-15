@@ -20,7 +20,7 @@ export default class SetPrefixCommand extends Command {
     */
 
     async run(message, args) {
-        if(!message.author.hasPermission('MANAGE_CHANNELS')){
+        if(!message.member.hasPermission('MANAGE_CHANNELS')){
             return message.reply({
                 embeds: [
                     new Discord.MessageEmbed()
