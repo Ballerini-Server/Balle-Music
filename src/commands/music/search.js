@@ -11,7 +11,7 @@ let sources = {
     "jamendo": "<:Jamendo:881968488636350526>"
 }
 
-const a = /^(.*?)--(soundcloud|sc|youtube\s?music|ytm|youtube|yt)$/gi
+const a = /^(.*?)--(soundcloud|sc|youtube\s?music|ytm|youtube|yt|jamendo|jm)$/gi
 
 export default class SearchCommand extends Command {
     constructor(client) {
