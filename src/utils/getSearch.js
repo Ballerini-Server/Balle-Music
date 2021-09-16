@@ -1,6 +1,7 @@
 const searchSoundcloud = /^(.*?)--(soundcloud|sc)$/gi
 const searchYouTubeMusic = /^(.*?)--(youtube\s?music|ytm)$/gi
 const searchYouTube = /^(.*?)--(youtube|yt)$/gi
+const searchJamendo = /^(.*?)--(jamendo|jm)$/gi
 import { URL } from "url"
 
 /**
@@ -17,6 +18,8 @@ export default function getSearch(query) {
             search = `scsearch:${query.replace(searchSoundcloud, "$1").trim()}`
         } else if(searchYouTubeMusic.test(query)) {
             search = `ytmsearch:${query.replace(searchYouTubeMusic, "$1").trim()}`
+        } else if(searchJamendo.test(query)) {
+            search = `jmsearch:${query.replace(searchJamendo, "$1").trim()}`
         } else {
             search = `ytsearch:${query.replace(searchYouTube, "$1").trim()}`
         }
