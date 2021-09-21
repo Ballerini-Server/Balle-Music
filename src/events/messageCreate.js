@@ -89,7 +89,7 @@ export default class MessageCreateEvent extends Event {
                     .setTimestamp()
                 ]
             })
-            if(!channel.permissionsFor(this.client.user.id).has(1048576)) return message.reply({
+            if(!channel.permissionsFor(this.client.user.id).has(1048576n)) return message.reply({
                 embeds: [
                     new Discord.MessageEmbed()
                     .setColor("RED")
@@ -98,7 +98,7 @@ export default class MessageCreateEvent extends Event {
                     .setTimestamp()
                 ]
             })
-            if(!channel.permissionsFor(this.client.user.id).has(2097152)) return message.reply({
+            if(!channel.permissionsFor(this.client.user.id).has(2097152n)) return message.reply({
                 embeds: [
                     new Discord.MessageEmbed()
                     .setColor("RED")

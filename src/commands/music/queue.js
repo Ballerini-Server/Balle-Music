@@ -38,6 +38,7 @@ export default class QueueCommand extends Command {
 
         let page = Number(args[0])
         if(!page) page = 1
+        page = Math.floor(page)
 
         let tracks = player.queue.map((track, i) => {
             track.index = Number(i)
@@ -45,7 +46,7 @@ export default class QueueCommand extends Command {
         })
 
         let chunkTracks = chunk(tracks, 10)
-        tracks = chunkTracks[Math.ceil(page / 10) - 1]
+        tracks = chunkTracks[page - 1]
         if(!tracks) return message.reply({
             embeds: [
                 new Discord.MessageEmbed()

@@ -29,6 +29,10 @@ export default (manager) => {
             case "PlayerQueueEnd":
                 if(manager.client.listenerCount("playerQueueEnd")) manager.client.emit("playerQueueEnd", data.player)
             break;
+
+            case "PlayerDestroy":
+                if(manager.client.listenerCount("playerDestroy")) manager.client.emit("playerDestroy", data.player)
+            break;
             
             case "NodeDisconect":
                 if(manager.client.listenerCount("nodeDisconect")) manager.client.emit("nodeDisconect", data.node, data.event)

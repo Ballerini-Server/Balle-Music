@@ -65,6 +65,10 @@ export default class LavalinkManager extends EventEmitter {
         if(options.removeAllListeners != false) player.removeAllListeners()
         await player.send("destroy")
         if(options.delete != false) this.players.delete(guild)
+        else this.emit("event", {
+            type: "PlayerDestroy",
+            player: player
+        })
         return true
     }
     async switch(player, node) {

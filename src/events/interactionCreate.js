@@ -15,6 +15,7 @@ export default class NameEvent extends Event {
 
         interaction.deferUpdate().catch(() => {})
         const player = this.client.music.players.get(interaction.guild.id)
+        if(!player) return;
         if(this.client.guilds.cache.get(player.id)?.me.voice.channel?.members.get(interaction.user.id)) {
             switch (interaction.customId) {
                 case "player_back":

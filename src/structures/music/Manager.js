@@ -1,6 +1,11 @@
 import LavalinkManager from "./LavalinkManager.js";
+import client from "../../bot.js"
 
 export default class Manager extends LavalinkManager {
+    /**
+     * 
+     * @param {client} client
+     */
     constructor(client, nodes, options) {
         super(nodes, options || {}, client);
         this.client = client;
@@ -20,6 +25,21 @@ export default class Manager extends LavalinkManager {
             this.user = client.user.id;
             this.shards = client.options.shardCount || 1;
         });
+
+        client.on("voiceStateUpdate", async (oldState, newState) => {
+            if(oldState.channel) {
+                if(oldState.channel.members) {
+                    if (!oldState.channel.members.has(client.user.id)) {
+                        if(!oldState.guild.me.voice.channel) {
+                            const player = this.players.get(oldState.guild.id)
+                            if(!player) return
+                            player.destroy()
+                        }
+                    }
+                }
+            }
+        })
+        
         if (client.guilds.cache && typeof this.client.ws.send === "undefined") {
             client.ws
                 .on("VOICE_SERVER_UPDATE", this.voiceServerUpdate.bind(this))

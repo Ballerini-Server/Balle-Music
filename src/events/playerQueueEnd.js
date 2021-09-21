@@ -26,6 +26,7 @@ export default class PlayerQueueEndEvent extends Event {
                 .setTimestamp()
             ]
         })
+        
         let timeout = setTimeout(function() {
             if(player.queue.current && player.playing || !player.leaveTimeout) return;
             player.destroy()
