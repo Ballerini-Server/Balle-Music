@@ -11,7 +11,7 @@ export default class QueueCommand extends Command {
             name: "queue",
             description: "Veja a lista de reprodução do servidor.",
             category: "music",
-            aliases: ["q", "fila"],
+            aliases: ["q", "fila","playlist"],
             dirname: global.__dirname(import.meta),
             requires: {
                 player: true
