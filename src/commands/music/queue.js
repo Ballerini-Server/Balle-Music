@@ -67,7 +67,7 @@ export default class QueueCommand extends Command {
         .setColor("#FFF2E7")
         .setAuthor(`Lista de reprodução do servidor ${message.guild.name}`)
         .setDescription(`${player.queue[player.queueIndex] ? `**Tocando agora: ${player.queueIndex + 1}° |** [\`${player.queue[player.queueIndex].title}\`](${player.queue[player.queueIndex].url}), **${player.queue[player.queueIndex].author}**` : "Nenhuma música tocando no momento"}\n\n${des.join("\n")}`)
-        .setFooter(`Pagína: ${page}/${chunkTracks.length} • ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
+        .setFooter(`Página: ${page}/${chunkTracks.length} • ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
         .setTimestamp()
 
         message.reply({
