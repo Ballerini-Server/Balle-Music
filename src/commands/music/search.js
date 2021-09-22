@@ -19,7 +19,7 @@ export default class SearchCommand extends Command {
             name: "search",
             description: "Procure uma música",
             category: "music",
-            aliases: ["buscar", "sc"],
+            aliases: ["buscar", "sc","procurar"],
             dirname: global.__dirname(import.meta),
             requires: {
                 memberVoiceChannel: true
