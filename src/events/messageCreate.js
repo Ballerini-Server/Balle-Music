@@ -80,6 +80,15 @@ export default class MessageCreateEvent extends Event {
                     .setTimestamp()
                 ]
             })
+            if(channel.id !== '789901847963631657') return message.reply({
+                embeds: [
+                    new Discord.MessageEmbed()
+                    .setColor("RED")
+                    .setDescription("**Você precisa estar no canal de voz de música!**")
+                    .setFooter(message.author.tag, message.author.displayAvatarURL({dynamic: true}))
+                    .setTimestamp()
+                ]
+            })
             if(player && message.guild.me.voice.channel && message.guild.me.voice.channel.id !== channel.id) return message.reply({
                 embeds: [
                     new Discord.MessageEmbed()
