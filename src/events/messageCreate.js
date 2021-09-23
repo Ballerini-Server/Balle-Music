@@ -13,7 +13,7 @@ export default class MessageCreateEvent extends Event {
      * @param {Discord.Message} message 
      */
     async run(message) {
-        if(message.author.bot || message.channel.type == "dm" || message.webhookID) return;
+        if(message.author.bot || message.channel.type == "dm" || message.webhookID || message.channel.id !== '880989334742908940') return;
 
         const perms = message.channel.permissionsFor(this.client.user.id);
         if(!perms.has("SEND_MESSAGES")) return;
