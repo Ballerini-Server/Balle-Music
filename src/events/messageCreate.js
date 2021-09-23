@@ -13,7 +13,7 @@ export default class MessageCreateEvent extends Event {
      * @param {Discord.Message} message 
      */
     async run(message) {
-        if(message.author.bot || message.channel.type == "dm" || message.webhookID || message.channel.id !== '789901824181665853') return;
+        if(message.author.bot || message.channel.type == "dm" || message.webhookID || message.channel.id !== '886964627831935016') return;
 
         const perms = message.channel.permissionsFor(this.client.user.id);
         if(!perms.has("SEND_MESSAGES")) return;
@@ -80,7 +80,7 @@ export default class MessageCreateEvent extends Event {
                     .setTimestamp()
                 ]
             })
-            if(channel.id !== '789901847963631657') return message.reply({
+            if(channel.id !== '890065684736929874') return message.reply({
                 embeds: [
                     new Discord.MessageEmbed()
                     .setColor("RED")
