@@ -24,7 +24,7 @@ export default class NameCommand extends Command {
         .setAuthor("Ajuda " + this.client.user.username, this.client.user.displayAvatarURL())
         .setDescription("**Essas são as categorias e comandos que podem ser usados:**")
         .setColor("#FFF2E7")
-        .setThumbnail("https://media.discordapp.net/attachments/836004917973614665/885676415159271434/question-mark-2-xxl.png")
+        .setThumbnail("https://i.imgur.com/7CGXs55.png")
 
         this.client.categories.map((x) => {
             embed.addField(this.client.config.categories[x], this.client.commands.filter(c => c.category == x).map(c => `\`${c.name}\``).join("**|**"))
