@@ -17,11 +17,6 @@ export default class MessageCreateEvent extends Event {
 
         const perms = message.channel.permissionsFor(this.client.user.id);
         if(!perms.has("SEND_MESSAGES")) return;
-
-        if(!perms.has("EMBED_LINKS")) return message.reply(`> Eu preciso de permissão de \`Enviar Links\``)
-        if(!perms.has("USE_EXTERNAL_EMOJIS")) return message.reply(`> Eu preciso de permissão de \`Usar Emojis Externos\``)
-        if(!perms.has("ADD_REACTIONS")) return message.reply(`> Eu preciso de permissão de \`Adicionar Reações\``)
-        if(!perms.has("ATTACH_FILES")) return message.reply(`> Eu preciso de permissão de \`Anexar arquivos\``)
         
         const _prefix = db.ref(`guilds/${message.guild.id}/prefix`).val() || this.client.config.prefix
         if(new RegExp(`^<@!?${this.client.user.id}>$`, 'i').test(message.content)) return message.reply({
@@ -40,6 +35,11 @@ export default class MessageCreateEvent extends Event {
         }
         if(!prefixo) return;
         if(!message.content.startsWith(prefixo.toLowerCase())) return;
+        
+        if(!perms.has("EMBED_LINKS")) return message.reply(`> Eu preciso de permissão de \`Enviar Links\``)
+        if(!perms.has("USE_EXTERNAL_EMOJIS")) return message.reply(`> Eu preciso de permissão de \`Usar Emojis Externos\``)
+        if(!perms.has("ADD_REACTIONS")) return message.reply(`> Eu preciso de permissão de \`Adicionar Reações\``)
+        if(!perms.has("ATTACH_FILES")) return message.reply(`> Eu preciso de permissão de \`Anexar arquivos\``)
 
         const args = message.content.trim().slice(prefixo.length).split(/ +/g);
         let command = args.shift().toLowerCase();
