@@ -76,7 +76,7 @@ export default class PlayCommand extends Command {
                     new Discord.MessageEmbed()
                     .setColor("#FFF2E7")
                     .setDescription(`${results.playlistInfo.name} | ${results.tracks.length} Músicas`)
-                    .setFooter(`Soliticado por: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
+                    .setFooter(`Solicitado por: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
                 ]
             }).catch(() => {})
 
@@ -90,7 +90,7 @@ export default class PlayCommand extends Command {
                     new Discord.MessageEmbed()
                     .setColor("#FFF2E7")
                     .setDescription(`[\`${results.tracks[0].title}\`](${results.tracks[0].url}) - \`${!results.tracks[0].isStream ? pretty(results.tracks[0].duration, {colonNotation: true, secondsDecimalDigits: 0}) : "◉ LIVE"}\``)
-                    .setFooter(`Soliticado por: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
+                    .setFooter(`Solicitado por: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
                 ]
             }).catch(() => {})
         }
